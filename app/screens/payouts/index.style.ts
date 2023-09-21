@@ -4,6 +4,9 @@ export const PayoutsWrapper = styled.section`
   .table-div {
     flex-direction: column;
     margin-top: 4.2rem;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .table-title-div {
