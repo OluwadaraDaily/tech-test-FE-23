@@ -1,4 +1,6 @@
 import Head from 'next/head'
+import PayoutsScreen from '../screens/payouts'
+import style from '../styles/Home.module.css'
 
 export default function Home() {
   return (
@@ -9,8 +11,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        
+      <main className={style.container}>
+        <PayoutsScreen/>
       </main>
     </div>
     
