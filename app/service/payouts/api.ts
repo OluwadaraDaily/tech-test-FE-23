@@ -6,7 +6,7 @@ const fetchPayouts = async () => {
 }
 
 const searchPayouts = async (query: string) => {
-  const response = await APIClient(`search/query=${query}`);
+  const response = await APIClient(`search?query=${query}`);
   return response;
 }
 
