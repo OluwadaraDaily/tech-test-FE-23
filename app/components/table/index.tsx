@@ -11,9 +11,9 @@ interface Props {
   rows: Payout[];
 }
 
-function Table ({ rows, columns }: Props) {
+const Table = ({ rows, columns }: Props) => {
   
-  const data = useMemo(() => rows, [])
+  const data = useMemo(() => rows, [rows])
   const table = useReactTable({ data, columns, getCoreRowModel: getCoreRowModel() })
 
   return (

@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const TableWrapper = styled.table`
   width: 100%;
+  margin-top: 1.5rem;
 
   tr:nth-child(even) {
     background-color: rgba(244, 244, 244, 0.50);

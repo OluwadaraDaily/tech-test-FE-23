@@ -9,6 +9,10 @@ export const PayoutsWrapper = styled.section`
     margin-right: auto;
   }
 
+  .title-and-search {
+    justify-content: space-between;
+  }
+
   .table-title-div {
     gap: 1rem;
 

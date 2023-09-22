@@ -18,13 +18,15 @@ import { Column } from "../../types/table";
 import { ColumnDef, CellContext } from '@tanstack/react-table'
 import Status from "../../components/status";
 import format from 'date-fns/format'
+import SearchInput from "../../components/search";
 
 interface PayoutResponse {
   data: Payout[];
   metadata: PayoutMetaData;
 }
 
-function PayoutsScreen() {
+const PayoutsScreen = () => {
+  const [searchQuery, setSearchQuery] = useState<string>('')
   const columns: ColumnDef<Payout>[] = [
     {
       accessorKey: 'dateAndTime',
@@ -46,40 +48,59 @@ function PayoutsScreen() {
     },
   ]
 
-  const query = "Larry"
-
-  const { data: payouts, isLoading, refetch } = useQuery<PayoutResponse>({
+  const { data: payouts, isLoading, refetch, isError } = useQuery<PayoutResponse>({
     queryKey: ['payouts'],
     queryFn: PayoutsAPI.fetchPayouts
   })
 
-  const { data: payoutsSearch, isLoading: isLoadingSearch, refetch: refetchSearch } = useQuery<PayoutResponse>({
-    queryKey: ['search-payouts', query],
-    queryFn: () => PayoutsAPI.searchPayouts(query)
+  const { data: payoutsSearch, isLoading: isLoadingSearch, refetch: refetchSearch, isError: isErrorSearch } = useQuery<Payout[]>({
+    queryKey: ['search-payouts', searchQuery],
+    queryFn: () => PayoutsAPI.searchPayouts(searchQuery)
   })
 
+  const handleSearchOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchValue = event.target.value
+    setSearchQuery(searchValue)
+  }
+
   useEffect(() => {
-    console.log('Payouts ->', payouts)
-    console.log('Payouts Search ->', payoutsSearch)
-  }, [payouts, payoutsSearch])
+    refetch();
+    refetchSearch();
+  }, [searchQuery])
+
+  let rows: Payout[] | undefined;
+  if (searchQuery.length > 0 && !isLoadingSearch && !isErrorSearch) {
+    rows = payoutsSearch;
+  } else if (!isLoading && !isError) {
+    rows = payouts?.data;
+  }
 
   return (
     <PayoutsWrapper>
       <H1Text className="title">Payouts</H1Text>
       <FlexibleDiv className="table-div">
-        <FlexibleDiv className="table-title-div">
-          <FlexibleDiv className="title-tag"></FlexibleDiv>
-          <H3Text>Payout History</H3Text>
+        <FlexibleDiv className="title-and-search">
+          <FlexibleDiv className="table-title-div">
+            <FlexibleDiv className="title-tag"></FlexibleDiv>
+            <H3Text>Payout History</H3Text>
+          </FlexibleDiv>
+          <FlexibleDiv>
+            <SearchInput handleOnChange={handleSearchOnChange}/>
+          </FlexibleDiv>
         </FlexibleDiv>
         <FlexibleDiv>
 
         </FlexibleDiv>
         <FlexibleDiv className="table">
-          {(!!payouts && payouts.data.length > 0 && !isLoading) &&
-            <Table columns={columns} rows={payouts.data}/>
-          }
-          {isLoading && <div>Loading...</div>}
-          {payoutsSearch?.data?.length === 0 && <div>No results found.</div>}
+        {(isError || isErrorSearch) ? (
+          <div>Error fetching data.</div>
+        ) : (isLoading || isLoadingSearch) ? (
+          <div>Loading...</div>
+        ) : rows && rows.length > 0 ? (
+          <Table columns={columns} rows={rows} />
+        ) : (
+          <div>No results found.</div>
+        )}
         </FlexibleDiv>
       </FlexibleDiv>
     </PayoutsWrapper>
