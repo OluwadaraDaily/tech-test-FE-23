@@ -88,13 +88,13 @@ const PayoutsScreen = () => {
         </FlexibleDiv>
         <FlexibleDiv className="table">
         {(isError || isErrorSearch) ? (
-          <div>Error fetching data.</div>
+          <div className="table-message">Error fetching data.</div>
         ) : (isLoading || isLoadingSearch) ? (
-          <div>Loading...</div>
+          <div className="table-message">Loading...</div>
         ) : rows && rows.length > 0 ? (
           <Table columns={columns} rows={rows} />
         ) : (
-          <div>No results found.</div>
+          <div className="table-message">No results found.</div>
         )}
         </FlexibleDiv>
       </FlexibleDiv>

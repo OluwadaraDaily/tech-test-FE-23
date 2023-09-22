@@ -26,5 +26,9 @@ export const PayoutsWrapper = styled.section`
 
   .table {
     flex-direction: column;
+
+    .table-message {
+      margin-top: 1.5rem;
+    }
   }
 `;
