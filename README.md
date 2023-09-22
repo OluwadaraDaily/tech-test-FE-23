@@ -1,50 +1,58 @@
-# Tech Test Brief
+# Lithium Ventures Test
 
-## Overview
+## Pre requisites
 
-We are seeking a capable developer to build a front-end application using either React or Next.js, combined with TypeScript. Your choice of framework should be based on your preference and expertise. The application should closely align with the designs found in this [Figma file](https://www.figma.com/file/hGBI3zpyHia5yrWsgeMP3K/Untitled?node-id=0%3A1&mode=dev). It is essential that the application utilises Styled Components for styling.
+Before you begin, ensure you have met the following requirements:
 
-## Technical Requirements
+- NodeJS: You should have Node.js installed on your machine. If you don't have it yet, you can download and install it from [nodejs.org](https://nodejs.org/en)
+- Package Manager: You need a package manager to install project dependencies. If you prefer to use npm, it comes bundled with Node.js. Alternatively, you can use yarn or another package manager of your choice
 
-### General
+## Getting Started
 
-- The application must be developed using TypeScript.
-- Utilise Styled Components for styling the components in accordance with the Figma designs.
-- We often find the need to make slight alterations to the designs - please use your best judgement to make the necessary adjustments, particularly adding a column for usernames.
-- Implement a search functionality that allows for searching payouts based on various criteria, including username. Please see the API Integration section for more details, and as above tweak the designs as you see fit.
+Follow these steps to set up and run the project locally:
 
-### API Integration
+1/ Clone the Repository: Begin by cloning this repository to your local machine.
 
-You will be integrating with an existing API. Here are the details of the endpoints you will need to interact with:
+```bash
+git clone <respository-url>
+```
 
-1. **Payouts Endpoint**
+2/ Navigate to the App Folder: Use the `cd` command to navigate to the project's app folder.
 
-   **Endpoint:** `https://theseus-staging.lithium.ventures/api/v1/analytics/tech-test/payouts`
+```bash
+cd app
+```
 
-   **Method:** GET
+3/ Install Dependencies: Install the project's dependencies using your preferred package manager. You can use npm, yarn, or any other package manager you prefer.
 
-   **Description:** This endpoint retrieves a list of payouts. Each payout object contains the following fields:
+```bash
+npm install
+# or
+yarn install
+# or your preferred package manager
+```
 
-   - `dateAndTime`: A string representing the date and time of the payout.
-   - `status`: A string indicating the status of the payout (Pending or Completed).
-   - `value`: A string representing the value of the payout.
-   - `username`: A string representing the username associated with the payout.
+4/ Configure Environment Variables
 
-2. **Search Endpoint**
+- Create a `.env.local` file in the project root directory. You can follow the structure outlined in the `.env.example` file.
 
-   **Endpoint:** `https://theseus-staging.lithium.ventures/api/v1/analytics/tech-test/search?query=SEARCH_TERM`
+- Set the `NEXT_PUBLIC_API_BASE_URL` variable to the base URL of the API. For example: 
 
-   **Method:** GET
+```bash
+NEXT_PUBLIC_API_BASE_URL=https://theseus-staging.lithium.ventures/api/v1/analytics/tech-test
+```
 
-   **Description:** This endpoint allows for searching payouts by username. Implement a functionality that facilitates user search with a keen focus on optimizing the user experience whilst considering performance.
+5/ Run the Development Server: Start the development server to run your project locally.
 
-## Evaluation Criteria
+```bash
+npm run dev
+# or
+yarn run dev
+# or your preferred package manager
+```
 
-- Adherence to the design as specified in the Figma file.
-- Proper usage of TypeScript and Styled Components.
-- Attention to detail in implementing various functionalities.
-- Optimizations implemented to enhance the user experience.
+This command will launch your project locally, and you can access it in your web browser at [http://localhost:3000](http://localhost:3000).
 
-## Submission
+## Contact
 
-Please fork this repository and submit your solution as a pull request. Please include a README file with instructions on how to run your application locally.
+For further assistance or inquiries, you can contact me at [daraoloye99@gmail.com](mailto:daraoloye99@gmail.com)
