@@ -12,7 +12,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import Status from "../../components/status";
 import format from 'date-fns/format'
 import SearchInput from "../../components/search";
-import { formatCurrency } from "../../utils/helpers";
+import { debounce, formatCurrency } from "../../utils/helpers";
 
 interface PayoutResponse {
   data: Payout[];
@@ -21,6 +21,8 @@ interface PayoutResponse {
 
 const PayoutsScreen = () => {
   const [searchQuery, setSearchQuery] = useState<string>('')
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>('')
+
   const columns: ColumnDef<Payout>[] = [
     {
       accessorKey: 'dateAndTime',
@@ -53,13 +55,17 @@ const PayoutsScreen = () => {
     queryFn: () => PayoutsAPI.searchPayouts(searchQuery)
   })
 
+  const debouncedHandleSearch = debounce((value: string) => {
+    setSearchQuery(value);
+  }, 400);
+
   const handleSearchOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value
-    setSearchQuery(searchValue)
+    setDebouncedSearchQuery(searchValue);
+    debouncedHandleSearch(searchValue);
   }
 
   useEffect(() => {
-    refetch();
     refetchSearch();
   }, [searchQuery])
 
