@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { FlexibleDiv } from "../box";
 
 export const TableWrapper = styled.table`
   width: 100%;
@@ -28,4 +29,10 @@ export const TableWrapper = styled.table`
     font-weight: 600;
     color: #1A1D1F;
   }
+`;
+
+export const PaginationWrapper = styled(FlexibleDiv)`
+  margin-top: 1rem;
+  justify-content: flex-end;
+  gap: 1rem;
 `;

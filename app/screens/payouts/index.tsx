@@ -1,24 +1,18 @@
-import { FlexibleDiv, FlexibleSpan } from "../../components/box";
+import { FlexibleDiv } from "../../components/box";
 import Table from "../../components/table";
 import { H1Text, H3Text, PaleTableText } from "../../components/typography";
 import { PayoutsAPI } from "../../service/payouts/api";
 import { PayoutsWrapper } from "./index.style"
 import {
-  useQuery,
-  QueryKey,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-  QueryFunction,
+  useQuery
 } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react';
 import { Payout, PayoutMetaData } from "../../service/payouts/types";
-import { Column } from "../../types/table";
-import { ColumnDef, CellContext } from '@tanstack/react-table'
+import { ColumnDef } from '@tanstack/react-table'
 import Status from "../../components/status";
 import format from 'date-fns/format'
 import SearchInput from "../../components/search";
+import { formatCurrency } from "../../utils/helpers";
 
 interface PayoutResponse {
   data: Payout[];
@@ -44,7 +38,8 @@ const PayoutsScreen = () => {
     },
     {
       accessorKey: 'value',
-      header: 'Value'
+      header: 'Value',
+      cell: (info: any) => formatCurrency(info.getValue())
     },
   ]
 

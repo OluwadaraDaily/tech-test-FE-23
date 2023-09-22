@@ -23,4 +23,8 @@ export const PayoutsWrapper = styled.section`
       border-radius: 4px;
     }
   }
+
+  .table {
+    flex-direction: column;
+  }
 `;
