@@ -1,7 +1,7 @@
 import { StatusWrapper } from "./index.style";
 
 interface Props {
-  status: 'pending' | 'paid';
+  status: string;
 }
 
 const Status = ({ status }: Props) => {

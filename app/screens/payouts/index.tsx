@@ -1,7 +1,7 @@
 import { FlexibleDiv, FlexibleSpan } from "../../components/box";
 import Table from "../../components/table";
-import { H1Text, H3Text } from "../../components/typography";
-import { payoutsAPI } from "../../service/payouts/api";
+import { H1Text, H3Text, PaleTableText } from "../../components/typography";
+import { PayoutsAPI } from "../../service/payouts/api";
 import { PayoutsWrapper } from "./index.style"
 import {
   useQuery,
@@ -15,29 +15,34 @@ import {
 import React, { useEffect, useState } from 'react';
 import { Payout, PayoutMetaData } from "../../service/payouts/types";
 import { Column } from "../../types/table";
+import { ColumnDef, CellContext } from '@tanstack/react-table'
+import Status from "../../components/status";
+import format from 'date-fns/format'
 
 interface PayoutResponse {
   data: Payout[];
   metadata: PayoutMetaData;
 }
 
-const PayoutsScreen = () => {
-  const newColumns: Column[] = [
+function PayoutsScreen() {
+  const columns: ColumnDef<Payout>[] = [
     {
-      key: 'username',
-      label: 'Username'
+      accessorKey: 'dateAndTime',
+      header: 'Date & Time',
+      cell: (info: any) => <PaleTableText>{format(new Date(info.getValue()), 'ccc, LLL d, kk:mm')}</PaleTableText>
     },
     {
-      key: 'value',
-      label: 'Value'
+      accessorKey: 'username',
+      header: 'Username',
     },
     {
-      key: 'status',
-      label: 'Status'
+      accessorKey: 'status',
+      header: 'Status',
+      cell: (info: any) => <Status status={info.getValue().toString()} /> 
     },
     {
-      key: 'dateAndTime',
-      label: 'Date & Time'
+      accessorKey: 'value',
+      header: 'Value'
     },
   ]
 
@@ -45,34 +50,36 @@ const PayoutsScreen = () => {
 
   const { data: payouts, isLoading, refetch } = useQuery<PayoutResponse>({
     queryKey: ['payouts'],
-    queryFn: payoutsAPI.fetchPayouts
+    queryFn: PayoutsAPI.fetchPayouts
   })
 
   const { data: payoutsSearch, isLoading: isLoadingSearch, refetch: refetchSearch } = useQuery<PayoutResponse>({
     queryKey: ['search-payouts', query],
-    queryFn: () => payoutsAPI.searchPayouts(query)
+    queryFn: () => PayoutsAPI.searchPayouts(query)
   })
-
-
 
   useEffect(() => {
     console.log('Payouts ->', payouts)
     console.log('Payouts Search ->', payoutsSearch)
-  }, [payouts])
+  }, [payouts, payoutsSearch])
 
   return (
     <PayoutsWrapper>
       <H1Text className="title">Payouts</H1Text>
       <FlexibleDiv className="table-div">
         <FlexibleDiv className="table-title-div">
-          <FlexibleSpan className="title-tag"></FlexibleSpan>
+          <FlexibleDiv className="title-tag"></FlexibleDiv>
           <H3Text>Payout History</H3Text>
         </FlexibleDiv>
         <FlexibleDiv>
 
         </FlexibleDiv>
         <FlexibleDiv className="table">
-          <Table columns={newColumns} rows={payouts?.data}/>
+          {(!!payouts && payouts.data.length > 0 && !isLoading) &&
+            <Table columns={columns} rows={payouts.data}/>
+          }
+          {isLoading && <div>Loading...</div>}
+          {payoutsSearch?.data?.length === 0 && <div>No results found.</div>}
         </FlexibleDiv>
       </FlexibleDiv>
     </PayoutsWrapper>

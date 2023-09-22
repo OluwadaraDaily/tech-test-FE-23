@@ -11,7 +11,7 @@ const searchPayouts = async (query: string) => {
 }
 
 
-export const payoutsAPI = {
+export const PayoutsAPI = {
   fetchPayouts,
   searchPayouts
 }

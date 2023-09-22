@@ -2,32 +2,49 @@ import { Payout } from "../../service/payouts/types";
 import { Column } from "../../types/table";
 import Status from "../status";
 import { TableWrapper } from "./index.style"
+import { useReactTable, ColumnDef, flexRender, getCoreRowModel } from '@tanstack/react-table'
+import { useMemo } from 'react';
+
 
 interface Props {
-  columns: Column[];
-  rows: any[] | undefined;
-
+  columns: ColumnDef<Payout>[];
+  rows: Payout[];
 }
 
-const Table = ({ rows, columns }: Props) => {
+function Table ({ rows, columns }: Props) {
+  
+  const data = useMemo(() => rows, [])
+  const table = useReactTable({ data, columns, getCoreRowModel: getCoreRowModel() })
+
   return (
-    <TableWrapper>
+    <TableWrapper cellSpacing={0}>
       <thead>
-        <tr>
-          {columns.map((column) => (
-            <th key={column.key}>{column.label}</th>
-          ))}
-        </tr>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <tr key={headerGroup.id}>
+            {headerGroup.headers.map(header => (
+              <th key={header.id}>
+                {flexRender(
+                  header.column.columnDef.header,
+                  header.getContext()
+                )}
+              </th>
+            ))}
+          </tr>
+        ))}
       </thead>
       <tbody>
-      {rows?.map((row, rowIndex) => (
-        <tr key={rowIndex}>
-          {columns.map((column, columnIndex) => (
-            <td key={`${rowIndex}-${columnIndex}`}>{row[column.key]}</td>
-          ))}
-          <Status status="paid"/>
-        </tr>
-      ))}
+        {table.getRowModel().rows.map(row => (
+          <tr key={row.id}>
+            {row.getVisibleCells().map(cell => (
+              <td key={cell.id}>
+                {flexRender(
+                  cell.column.columnDef.cell,
+                  cell.getContext()
+                )}
+              </td>
+            ))}
+          </tr>
+        ))}
       </tbody>
     </TableWrapper>
   )

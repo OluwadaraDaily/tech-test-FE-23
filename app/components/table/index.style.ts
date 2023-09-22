@@ -2,6 +2,10 @@ import styled from "styled-components";
 
 export const TableWrapper = styled.table`
   width: 100%;
+
+  tr:nth-child(even) {
+    background-color: rgba(244, 244, 244, 0.50);
+  }
   
   th,td {
     padding: 1.25rem 0;
@@ -14,15 +18,13 @@ export const TableWrapper = styled.table`
     font-weight: 500;
   }
 
+  th:nth-child(1) {
+    padding-left: 1.5rem;
+  }
+
   td {
     font-size: 14px;
     font-weight: 600;
-
-    .date {
-      color: #6F767E;
-    }
-    .value {
-      color: #1A1D1F;
-    }
+    color: #1A1D1F;
   }
 `;
